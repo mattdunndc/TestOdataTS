@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "TypeScript / OData4 / AngularJs Sample";
+}
+
+<script src="~/Scripts/angular.js"></script>
+<script src="~/TypeScript/oDataApp.js"></script>
+<script src="~/TypeScript/oDataController.js"></script>
+
+<style>
+    table, th, td {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+</style>
+
+<h2>@ViewBag.Title</h2>
+
+<div id="home" class="tab-pane fade in active ng-cloak"
+     data-ng-app="ODataApp" 
+     data-ng-controller="oDataController as vm">
+    <br />
+    <div style="width:700px">
+        <button ng-click="vm.GetAllTasks()">All</button>&nbsp;
+        <button ng-click="vm.ShowComplete()">Complete</button>&nbsp;
+        <button ng-click="vm.ShowInComplete()">In-Complete</button>
+        <button ng-click="vm.NewTask()">New Task</button>&nbsp;
+        <br /><br />
+        <table class="table-responsive">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>TaskName</td>
+                    <td>IsComplete</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="Task in vm.colTasks track by $index" id="{{Task.Id}}" class="active">
+                    <td>{{Task.Id}}</td>
+                    <td><a href="#" ng-click="vm.selectedTask = Task">{{Task.TaskName}}</a> </td>
+                    <td align="center">
+                        <input type="checkbox"
+                               ng-model="Task.IsComplete"
+                               disabled="disabled">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <form ng-if="vm.selectedTask">
+            <fieldset style="width: 300px; background-color: #bfbfbf;">
+                <legend>{{vm.selectedTask.TaskName}}</legend>
+                <label>
+                    <span><strong>Id:</strong></span>
+                    <span>{{vm.selectedTask.Id}}</span>
+                    <br />
+                    <span><strong>Task Name:</strong></span>
+                    <input ng-model="vm.selectedTask.TaskName" size="20" />
+                    <br />
+                    <span><strong>Is Complete:</strong></span>
+                    <input type="checkbox" ng-model="vm.selectedTask.IsComplete" />
+                    <br />
+                </label>
+                <button ng-click="vm.Save()">Save</button>
+                <button ng-click="vm.Delete()">Remove</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<hr />
+<a href="/Tasks/">[MVC Tasks Page]</a>
+
